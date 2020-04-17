@@ -1,0 +1,4 @@
+# Java output
+/bin
+*.class
+*.jar
