@@ -1,0 +1,10 @@
+name: BasicBroadcast
+version: 1.0.0
+author: Romejanic
+
+main: com.romejanic.bb.BasicBroadcast
+
+commands:
+    bb:
+        description: Base command for BasicBroadcast
+        usage: /bb ...
