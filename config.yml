@@ -1,0 +1,56 @@
+# BasicBroadcast Configuration File
+
+# This file may be altered while the server is running.
+# To apply changes made without restarting your server,
+# simply type '/bb reload' into the chat or console.
+
+messages:
+    # A list of messages you would like to broadcast.
+    # You may insert a newline (\n) character to make the
+    # message span multiple lines.
+    #
+    # You may also include colour codes to add colour or
+    # formatting, denoted by a '&' sign followed by the
+    # colour code (e.g. '&6'). A list of them can be found here:
+    #
+    # https://minecraft.gamepedia.com/Formatting_codes#Color_codes
+    #
+    # You can also add or remove messages in-game using the
+    # /bb command. Type /bb help for more information.
+    #
+    - 'This is a basic broadcast message!'
+    - '&eHere is a message with &lcolour!'
+    - 'This is one of the possible messages, add some more!'
+    - 'Here is an example of\na &nmulti-line &rmessage'
+    
+broadcasting:
+    # The prefix to display before your messages. You can
+    # choose to have no prefix at all by setting the 'use-prefix'
+    # property to 'false'.
+    #
+    # You can also use colour codes in your prefix. See above for
+    # more information.
+    #
+    prefix: '&4&l[BB]'
+    use-prefix: true
+    
+    # How often messages get broadcasted. This is denoted by typing
+    # a period (number) followed by a time unit. The possible time
+    # units are:
+    #
+    # sec, min, hr, days
+    #
+    # e.g. 10 sec, 5 min, 2hr, 4 hr, 10days
+    #
+    period: '1 min'
+    
+    # Whether or not the messages are randomly selected. If set to 'true', 
+    # then messages will be picked at random. If set to 'false', they will
+    # use a "round-robin" approach where messages appear consequetively one
+    # after the other.
+    #
+    # The 'avoid-repeats' property determines whether or not to avoid picking
+    # the same random broadcast twice in a row.
+    #
+    select-random: false
+    avoid-repeats: true
