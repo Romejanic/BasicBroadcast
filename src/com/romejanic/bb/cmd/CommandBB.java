@@ -4,6 +4,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 
 import com.romejanic.bb.BasicBroadcast;
 
@@ -17,7 +18,7 @@ public class CommandBB implements CommandExecutor {
 	
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		if(sender.isOp() || sender.hasPermission("bb.config")) {
+		if(!this.hasPermission("config", sender)) {
 			sender.sendMessage(ChatColor.RED + "Sorry, you don't have permission to use this command.");
 			return true;
 		}
@@ -40,6 +41,12 @@ public class CommandBB implements CommandExecutor {
 			}
 		}
 		return true;
+	}
+	
+	private boolean hasPermission(String perm, CommandSender sender) {
+		return sender.isOp()
+			|| sender.hasPermission("bb.*")
+			|| sender.hasPermission("bb." + perm);
 	}
 
 }
