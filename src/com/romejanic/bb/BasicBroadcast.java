@@ -1,34 +1,40 @@
 package com.romejanic.bb;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.romejanic.bb.cmd.CommandBB;
+import com.romejanic.bb.schedule.Broadcaster;
 import com.romejanic.bb.util.Config;
-import com.romejanic.bb.util.Util;
 
 public class BasicBroadcast extends JavaPlugin {
 
-	private Config config;
+	public Config config;
+	private Broadcaster broadcaster;
+	
 	private boolean enabled = false;
 	
 	@Override
 	public void onEnable() {
 		this.config = new Config(this);
-		this.getCommand("bb").setExecutor(new CommandBB());
+		this.broadcaster = new Broadcaster(this);
+		this.getCommand("bb").setExecutor(new CommandBB(this));
 		
-		String period = this.config.getBroadcastPeriod();
-		long periodSecs = Util.parsePeriodString(period);
-		System.out.println("Period is set to '" + period + "' (i.e. " + periodSecs + " seconds)");
-		
-		getLogger().info("All set!");
+		this.reschedule();
 		getLogger().info("If you like this plugin feel free to give it a star on GitHub: " + ChatColor.BOLD + "https://github.com/Romejanic/BasicBroadcast");
 	}
 	
 	@Override
 	public void onDisable() {
+		this.broadcaster.unschedule();
 		getLogger().info("Cleaned up plugin. Thanks for using!");
+	}
+	
+	public boolean reschedule() {
+		this.enabled = this.broadcaster.reschedule();
+		if(this.enabled) getLogger().info("All set!");
+		else getLogger().warning("There was a problem scheduling the broadcast! Check your config then run /bb reload");
+		return this.enabled;
 	}
 	
 }
