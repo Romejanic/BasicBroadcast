@@ -17,6 +17,9 @@ public class Broadcaster implements Runnable {
 	
 	@Override
 	public void run() {
+		// if there's no online players, don't broadcast anything (avoid clogging
+		// up the server logs)
+		if(Bukkit.getOnlinePlayers().isEmpty()) return;
 		String prefix = this.plugin.config.getChatPrefix();
 		Bukkit.broadcastMessage(prefix + ChatColor.RESET + " Broadcasting test");
 	}
