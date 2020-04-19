@@ -10,7 +10,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class Config {
 
 	private final JavaPlugin plugin;
-	private FileConfiguration config;
 	
 	private String cachedChatPrefix;
 	private List<String> cachedMessages = new ArrayList<String>();
@@ -18,7 +17,6 @@ public class Config {
 	public Config(JavaPlugin plugin) {
 		plugin.saveDefaultConfig();
 		this.plugin = plugin;
-		this.config = plugin.getConfig();
 		this.cacheValues();
 	}
 	
@@ -33,16 +31,20 @@ public class Config {
 	}
 	
 	private void cacheValues() {
-		this.cachedChatPrefix = Util.parseColors(this.config.getString("broadcasting.prefix"));
+		this.cachedChatPrefix = Util.parseColors(this.getConfig().getString("broadcasting.prefix"));
 		
 		this.cachedMessages.clear();
-		Iterator<?> iter = this.config.getList("messages").iterator();
+		Iterator<?> iter = this.getConfig().getList("messages").iterator();
 		while(iter.hasNext()) {
 			Object next = iter.next();
 			if(next instanceof String) {
 				this.cachedMessages.add(Util.parseColors((String)next));
 			}
 		}
+	}
+	
+	private FileConfiguration getConfig() {
+		return this.plugin.getConfig();
 	}
 	
 	//===========CONFIG GETTERS============//
@@ -56,19 +58,19 @@ public class Config {
 	}
 	
 	public boolean useChatPrefix() {
-		return this.config.getBoolean("broadcasting.use-prefix", true);
+		return this.getConfig().getBoolean("broadcasting.use-prefix", true);
 	}
 	
 	public String getBroadcastPeriod() {
-		return this.config.getString("broadcasting.period");
+		return this.getConfig().getString("broadcasting.period");
 	}
 	
 	public boolean shouldSelectRandom() {
-		return this.config.getBoolean("broadcasting.select-random", false);
+		return this.getConfig().getBoolean("broadcasting.select-random", false);
 	}
 	
 	public boolean shouldAvoidRepeats() {
-		return this.config.getBoolean("broadcasting.avoid-repeats", true);
+		return this.getConfig().getBoolean("broadcasting.avoid-repeats", true);
 	}
 	
 }
