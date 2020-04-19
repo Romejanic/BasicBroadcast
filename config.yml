@@ -31,8 +31,13 @@ broadcasting:
     # You can also use colour codes in your prefix. See above for
     # more information.
     #
+    # Messages will appear in the default colour (white). If you 
+    # would like them to carry over the prefix colour, change the
+    # 'reset-colour' property to 'false'.
+    #
     prefix: '&4&l[BB]'
     use-prefix: true
+    reset-colour: true
     
     # How often messages get broadcasted. This is denoted by typing
     # a period (number) followed by a time unit. The possible time
@@ -54,3 +59,8 @@ broadcasting:
     #
     select-random: false
     avoid-repeats: true
+    
+    # By default, the plugin disables the broadcasting when there are no players
+    # online. This is to reduce clutter in the server logs. However if you would
+    # like it to broadcast at all times, set this property to 'true'.
+    broadcast-when-empty: false

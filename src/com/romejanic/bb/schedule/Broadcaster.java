@@ -4,24 +4,31 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
 import com.romejanic.bb.BasicBroadcast;
+import com.romejanic.bb.util.Config;
 import com.romejanic.bb.util.Util;
 
 public class Broadcaster implements Runnable {
 
 	private final BasicBroadcast plugin;
+	private final Config config;
+	
 	private int scheduleID = -1;
 	
 	public Broadcaster(BasicBroadcast plugin) {
 		this.plugin = plugin;
+		this.config = plugin.config;
 	}
 	
 	@Override
 	public void run() {
-		// if there's no online players, don't broadcast anything (avoid clogging
-		// up the server logs)
-		if(Bukkit.getOnlinePlayers().isEmpty()) return;
+		if(!this.config.shouldBroadcastWhenEmpty() && Bukkit.getOnlinePlayers().isEmpty()) return;
+		
 		String prefix = this.plugin.config.getChatPrefix();
-		Bukkit.broadcastMessage(prefix + ChatColor.RESET + " Broadcasting test");
+		String message = "Broadcasting test";
+		
+		StringBuilder sb = new StringBuilder().append(prefix);
+		if(this.config.shouldResetColour()) sb.append(ChatColor.RESET);
+		Bukkit.broadcastMessage(sb.append(" ").append(message.trim()).toString());
 	}
 
 	public boolean schedule() {

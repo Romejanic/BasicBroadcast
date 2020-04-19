@@ -73,4 +73,12 @@ public class Config {
 		return this.getConfig().getBoolean("broadcasting.avoid-repeats", true);
 	}
 	
+	public boolean shouldBroadcastWhenEmpty() {
+		return this.getConfig().getBoolean("broadcasting.broadcast-when-empty", false);
+	}
+	
+	public boolean shouldResetColour() {
+		return this.getConfig().getBoolean("broadcasting.reset-colour", true);
+	}
+	
 }
