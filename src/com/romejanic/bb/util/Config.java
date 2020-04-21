@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -25,11 +26,6 @@ public class Config {
 		this.cacheValues();
 	}
 	
-	public void save() {
-		// TODO: update values in config object
-		this.plugin.saveConfig();
-	}
-	
 	private void cacheValues() {
 		this.cachedChatPrefix = Util.parseColors(this.getConfig().getString("broadcasting.prefix"));
 		
@@ -38,9 +34,21 @@ public class Config {
 		while(iter.hasNext()) {
 			Object next = iter.next();
 			if(next instanceof String) {
-				this.cachedMessages.add(Util.parseColors((String)next));
+				this.cachedMessages.add(formatBroadcastMessage((String)next));
 			}
 		}
+	}
+	
+	private String formatBroadcastMessage(String msg) {
+		msg = Util.parseColors(msg);
+		if(this.useChatPrefix()) {
+			String prefix = this.getChatPrefix() + " ";
+			if(this.shouldResetColour()) {
+				prefix += ChatColor.RESET;
+			}
+			msg = prefix + msg;
+		}
+		return msg;
 	}
 	
 	private FileConfiguration getConfig() {
@@ -49,8 +57,16 @@ public class Config {
 	
 	//===========CONFIG GETTERS============//
 	
-	public List<String> getMessageList() {
-		return this.cachedMessages;
+	public int getMessageCount() {
+		return this.cachedMessages.size();
+	}
+	
+	public Iterator<String> getMessageIterator() {
+		return this.cachedMessages.iterator();
+	}
+	
+	public String getMessageAt(int i) {
+		return this.cachedMessages.get(i);
 	}
 
 	public String getChatPrefix() {

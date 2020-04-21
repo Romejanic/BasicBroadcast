@@ -1,11 +1,14 @@
 package com.romejanic.bb.cmd;
 
+import java.util.Iterator;
+
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
 import com.romejanic.bb.BasicBroadcast;
+import com.romejanic.bb.util.Config;
 
 public class CommandBB implements CommandExecutor {
 
@@ -22,9 +25,17 @@ public class CommandBB implements CommandExecutor {
 			return true;
 		}
 		if(args.length == 0) {
-			sender.sendMessage(ChatColor.RED + "Usage: /bb <add|remove|list|reload> ...");
+			sender.sendMessage(ChatColor.RED + "Usage: /bb <list|reload>");
 		} else {
+			Config config = this.plugin.config;
 			switch(args[0].toLowerCase()) {
+			case "list":
+				sender.sendMessage(ChatColor.BOLD + "List of broadcast messages:");
+				Iterator<String> iter = config.getMessageIterator();
+				while(iter.hasNext()) {
+					sender.sendMessage("- " + iter.next());
+				}
+				break;
 			case "reload":
 				this.plugin.getLogger().info("Reloading plugin, please wait...");
 				this.plugin.config.reload();

@@ -1,5 +1,7 @@
 package com.romejanic.bb.schedule;
 
+import java.util.Random;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
@@ -9,10 +11,14 @@ import com.romejanic.bb.util.Util;
 
 public class Broadcaster implements Runnable {
 
+	private static final Random RANDOM = new Random();
+	
 	private final BasicBroadcast plugin;
 	private final Config config;
 	
 	private int scheduleID = -1;
+	
+	private int index = 0;
 	
 	public Broadcaster(BasicBroadcast plugin) {
 		this.plugin = plugin;
@@ -23,12 +29,24 @@ public class Broadcaster implements Runnable {
 	public void run() {
 		if(!this.config.shouldBroadcastWhenEmpty() && Bukkit.getOnlinePlayers().isEmpty()) return;
 		
-		String prefix = this.plugin.config.getChatPrefix();
-		String message = "Broadcasting test";
+		boolean random = this.config.shouldSelectRandom();
+		int idx = -1;
 		
-		StringBuilder sb = new StringBuilder().append(prefix);
-		if(this.config.shouldResetColour()) sb.append(ChatColor.RESET);
-		Bukkit.broadcastMessage(sb.append(" ").append(message.trim()).toString());
+		if(random) { // implement select-at-random
+			boolean avoidRepeats = this.config.shouldAvoidRepeats();
+			do {
+				idx = RANDOM.nextInt(this.config.getMessageCount());
+			} while((!avoidRepeats && idx < 0) || idx == this.index);
+			this.index = idx;
+		} else {    // implement round-robin
+			idx = this.index;
+			this.index++;
+			if(this.index > this.config.getMessageCount()) {
+				this.index = 0;
+			}
+		}
+		
+		Bukkit.broadcastMessage(this.config.getMessageAt(idx));
 	}
 
 	public boolean schedule() {
