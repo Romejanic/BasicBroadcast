@@ -40,7 +40,7 @@ public class Broadcaster implements Runnable {
 		} else {    // implement round-robin
 			idx = this.index;
 			this.index++;
-			if(this.index > this.config.getMessageCount()) {
+			if(this.index >= this.config.getMessageCount()) {
 				this.index = 0;
 			}
 		}
