@@ -5,19 +5,19 @@
 # simply type '/bb reload' into the chat or console.
 
 messages:
-	# A list of messages you would like to broadcast.
-	# You may insert a newline (\n) character to make the
-	# message span multiple lines.
-	#
-	# You may also include colour codes to add colour or
-	# formatting, denoted by a '&' sign followed by the
-	# colour code (e.g. '&6'). A list of them can be found here:
-	#
-	# https://minecraft.gamepedia.com/Formatting_codes#Color_codes
-	#
-	# To add/remove messages, edit this config file then run
-	# /bb reload.
-	#
+    # A list of messages you would like to broadcast.
+    # You may insert a newline (\n) character to make the
+    # message span multiple lines.
+    #
+    # You may also include colour codes to add colour or
+    # formatting, denoted by a '&' sign followed by the
+    # colour code (e.g. '&6'). A list of them can be found here:
+    #
+    # https://minecraft.gamepedia.com/Formatting_codes#Color_codes
+    #
+    # To add/remove messages, edit this config file then run
+    # /bb reload.
+    #
     - 'This is a basic broadcast message!'
     - '&eHere is a message with &lcolour!'
     - 'This is one of the possible messages, add some more!'
