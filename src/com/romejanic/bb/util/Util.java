@@ -1,6 +1,10 @@
 package com.romejanic.bb.util;
 
+import java.util.Iterator;
+import java.util.List;
+
 import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
 
 public class Util {
 
@@ -8,6 +12,24 @@ public class Util {
 		return in.replaceAll("&", String.valueOf(ChatColor.COLOR_CHAR));
 	}
 
+	public static String join(List<String> list, String div) {
+		StringBuilder sb = new StringBuilder();
+		Iterator<String> iter = list.iterator();
+		while(iter.hasNext()) {
+			sb.append(iter.next());
+			if(iter.hasNext()) {
+				sb.append(div);
+			}
+		}
+		return sb.toString();
+	}
+	
+	public static boolean hasPermission(String perm, CommandSender sender) {
+		return sender.isOp()
+			|| sender.hasPermission("bb.*")
+			|| sender.hasPermission("bb." + perm);
+	}
+	
 	/**
 	 * Parses period string from configuration into a number
 	 * of seconds.
