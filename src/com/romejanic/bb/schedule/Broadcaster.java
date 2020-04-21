@@ -3,7 +3,6 @@ package com.romejanic.bb.schedule;
 import java.util.Random;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 
 import com.romejanic.bb.BasicBroadcast;
 import com.romejanic.bb.util.Config;
@@ -33,7 +32,7 @@ public class Broadcaster implements Runnable {
 		int idx = -1;
 		
 		if(random) { // implement select-at-random
-			boolean avoidRepeats = this.config.shouldAvoidRepeats();
+			boolean avoidRepeats = this.config.shouldAvoidRepeats() && this.config.getMessageCount() > 1;
 			do {
 				idx = RANDOM.nextInt(this.config.getMessageCount());
 			} while((!avoidRepeats && idx < 0) || idx == this.index);
@@ -50,6 +49,7 @@ public class Broadcaster implements Runnable {
 	}
 
 	public boolean schedule() {
+		this.index = 0;
 		long secs = Util.parsePeriodString(this.plugin.config.getBroadcastPeriod());
 		if(secs < 0l) return false;
 		long ticks = secs * 20L; // convert number of seconds into number of ticks
