@@ -41,13 +41,20 @@ public class Config {
 	
 	private String formatBroadcastMessage(String msg) {
 		msg = Util.parseColors(msg);
+		String prefix = "";
 		if(this.useChatPrefix()) {
-			String prefix = this.getChatPrefix() + " ";
+			prefix = this.getChatPrefix() + " ";
 			if(this.shouldResetColour()) {
 				prefix += ChatColor.RESET;
 			}
 			msg = prefix + msg;
 		}
+//		int i = msg.indexOf("\\n");
+//		if(i > -1) {
+//			for(; i > 0; i = msg.indexOf("\\n", i+1)) {
+//				msg = msg.substring(0,i) + prefix + msg.substring(i);
+//			}
+//		}
 		return msg;
 	}
 	
