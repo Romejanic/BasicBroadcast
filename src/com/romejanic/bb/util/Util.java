@@ -24,6 +24,17 @@ public class Util {
 		return sb.toString();
 	}
 	
+	public static String join(String[] arr, String div) {
+		StringBuilder sb = new StringBuilder();
+		for(int i = 0; i < arr.length; i++) {
+			sb.append(arr[i]);
+			if(i < arr.length - 1) {
+				sb.append(div);
+			}
+		}
+		return sb.toString();
+	}
+	
 	public static boolean hasPermission(String perm, CommandSender sender) {
 		return sender.isOp()
 			|| sender.hasPermission("bb.*")

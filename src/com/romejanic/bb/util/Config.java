@@ -13,7 +13,7 @@ public class Config {
 	private final JavaPlugin plugin;
 	
 	private String cachedChatPrefix;
-	private List<String> cachedMessages = new ArrayList<String>();
+	private List<String[]> cachedMessages = new ArrayList<String[]>();
 	
 	public Config(JavaPlugin plugin) {
 		plugin.saveDefaultConfig();
@@ -39,7 +39,7 @@ public class Config {
 		}
 	}
 	
-	private String formatBroadcastMessage(String msg) {
+	private String[] formatBroadcastMessage(String msg) {
 		msg = Util.parseColors(msg);
 		String prefix = "";
 		if(this.useChatPrefix()) {
@@ -49,12 +49,15 @@ public class Config {
 			}
 			msg = prefix + msg;
 		}
+		List<String> temp = new ArrayList<String>();
 		int i = msg.indexOf('\\');
 		while(i > -1 && i < msg.length()-1 && msg.charAt(i+1) == 'n') {
-			msg = msg.substring(0,i+2).trim() + prefix + msg.substring(i+2).trim();
-			i = msg.indexOf('\\', i+prefix.length()+1);
+			temp.add(msg.substring(0,i).trim());
+			msg = prefix + msg.substring(i+2).trim();
+			i = msg.indexOf('\\');
 		}
-		return msg;
+		temp.add(msg);
+		return temp.toArray(new String[temp.size()]);
 	}
 	
 	private FileConfiguration getConfig() {
@@ -67,11 +70,11 @@ public class Config {
 		return this.cachedMessages.size();
 	}
 	
-	public Iterator<String> getMessageIterator() {
+	public Iterator<String[]> getMessageIterator() {
 		return this.cachedMessages.iterator();
 	}
 	
-	public String getMessageAt(int i) {
+	public String[] getMessageAt(int i) {
 		return this.cachedMessages.get(i);
 	}
 

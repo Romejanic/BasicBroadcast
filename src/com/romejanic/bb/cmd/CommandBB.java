@@ -33,9 +33,9 @@ public class CommandBB implements CommandExecutor {
 			switch(args[0].toLowerCase()) {
 			case "list":
 				sender.sendMessage(ChatColor.BOLD + "List of broadcast messages:");
-				Iterator<String> iter = config.getMessageIterator();
+				Iterator<String[]> iter = config.getMessageIterator();
 				while(iter.hasNext()) {
-					sender.sendMessage("- " + iter.next());
+					sender.sendMessage("- " + Util.join(iter.next(), ","));
 				}
 				break;
 			case "reload":
