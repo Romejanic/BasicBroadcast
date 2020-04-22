@@ -45,7 +45,15 @@ public class Broadcaster implements Runnable {
 			}
 		}
 		
-		Bukkit.broadcastMessage(this.config.getMessageAt(idx));
+		String msg = this.config.getMessageAt(idx);
+		if(Util.isMultiline(msg)) {
+			String[] lines = msg.split("\\n");
+			for(String line : lines) {
+				Bukkit.broadcastMessage(line);
+			}
+		} else {
+			Bukkit.broadcastMessage(msg);
+		}
 	}
 
 	public boolean schedule() {

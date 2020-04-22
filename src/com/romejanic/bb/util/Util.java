@@ -30,6 +30,11 @@ public class Util {
 			|| sender.hasPermission("bb." + perm);
 	}
 	
+	public static boolean isMultiline(String line) {
+		int idx = line.indexOf('\\');
+		return idx > -1 && idx < line.length()-1 && line.charAt(idx+1) == 'n';
+	}
+	
 	/**
 	 * Parses period string from configuration into a number
 	 * of seconds.
