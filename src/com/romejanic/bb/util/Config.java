@@ -49,12 +49,11 @@ public class Config {
 			}
 			msg = prefix + msg;
 		}
-//		int i = msg.indexOf("\\n");
-//		if(i > -1) {
-//			for(; i > 0; i = msg.indexOf("\\n", i+1)) {
-//				msg = msg.substring(0,i) + prefix + msg.substring(i);
-//			}
-//		}
+		int i = msg.indexOf('\\');
+		while(i > -1 && i < msg.length()-1 && msg.charAt(i+1) == 'n') {
+			msg = msg.substring(0,i+2).trim() + prefix + msg.substring(i+2).trim();
+			i = msg.indexOf('\\', i+prefix.length()+1);
+		}
 		return msg;
 	}
 	
