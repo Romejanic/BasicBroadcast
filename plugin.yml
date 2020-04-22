@@ -1,6 +1,7 @@
 name: BasicBroadcast
 version: 1.0.0
 author: Romejanic
+api-version: 1.15
 
 main: com.romejanic.bb.BasicBroadcast
 
