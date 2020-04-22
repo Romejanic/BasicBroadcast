@@ -33,9 +33,9 @@ public class Config {
 		Iterator<?> iter = this.getConfig().getList("messages").iterator();
 		while(iter.hasNext()) {
 			Object next = iter.next();
-			if(next instanceof String) {
-				this.cachedMessages.add(formatBroadcastMessage((String)next));
-			}
+			this.cachedMessages.add(
+				formatBroadcastMessage(String.valueOf(next))
+			);
 		}
 	}
 	
