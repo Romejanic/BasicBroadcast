@@ -1,5 +1,6 @@
 package com.romejanic.bb;
 
+import org.bstats.bukkit.Metrics;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -9,14 +10,20 @@ import com.romejanic.bb.util.Config;
 
 public class BasicBroadcast extends JavaPlugin {
 
+	private static final int BSTATS_PLUGIN_ID = 7641;
+	
 	public Config config;
 	private Broadcaster broadcaster;
 	
 	private boolean enabled = false;
 	
+	private Metrics metrics;
+	
 	@Override
 	public void onEnable() {
-		this.config = new Config(this);
+		this.metrics = new Metrics(this, BSTATS_PLUGIN_ID);
+		
+		this.config = new Config(this, this.metrics);
 		this.broadcaster = new Broadcaster(this);
 		this.getCommand("bb").setExecutor(new CommandBB(this));
 		

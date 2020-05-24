@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.bstats.bukkit.Metrics;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -11,13 +12,15 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class Config {
 
 	private final JavaPlugin plugin;
+	private final Metrics metrics;
 	
 	private String cachedChatPrefix;
 	private List<String[]> cachedMessages = new ArrayList<String[]>();
 	
-	public Config(JavaPlugin plugin) {
+	public Config(JavaPlugin plugin, Metrics metrics) {
 		plugin.saveDefaultConfig();
 		this.plugin = plugin;
+		this.metrics = metrics;
 		this.cacheValues();
 	}
 	
@@ -37,6 +40,8 @@ public class Config {
 				formatBroadcastMessage(String.valueOf(next))
 			);
 		}
+		
+		this.metrics.addCustomChart(new Metrics.SimplePie("number_of_messages", () -> String.valueOf(this.cachedMessages.size())));
 	}
 	
 	private String[] formatBroadcastMessage(String msg) {
