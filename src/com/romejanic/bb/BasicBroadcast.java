@@ -1,12 +1,12 @@
 package com.romejanic.bb;
 
-import org.bstats.bukkit.Metrics;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.romejanic.bb.cmd.CommandBB;
 import com.romejanic.bb.schedule.Broadcaster;
 import com.romejanic.bb.util.Config;
+import com.romejanic.bb.util.Metrics;
 
 public class BasicBroadcast extends JavaPlugin {
 
