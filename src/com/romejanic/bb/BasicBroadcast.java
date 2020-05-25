@@ -5,6 +5,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.romejanic.bb.cmd.CommandBB;
 import com.romejanic.bb.schedule.Broadcaster;
+import com.romejanic.bb.update.UpdateChecker;
 import com.romejanic.bb.util.Config;
 import com.romejanic.bb.util.Metrics;
 
@@ -29,6 +30,17 @@ public class BasicBroadcast extends JavaPlugin {
 		
 		this.reschedule();
 		getLogger().info("If you like this plugin feel free to give it a star on GitHub: " + ChatColor.BOLD + "https://github.com/Romejanic/BasicBroadcast");
+	
+		UpdateChecker.checkForUpdates(this, (status) -> {
+			if(status.isOutdated()) {
+				getLogger().info("Found new version (v" + status.latestVersion + ")");
+				getLogger().info("Download: " + status.latestURL);
+				getLogger().info("Changes:");
+				for(String change : status.changelog) {
+					getLogger().info(" " + change);
+				}
+			}
+		});
 	}
 	
 	@Override
