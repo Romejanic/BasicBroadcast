@@ -28,7 +28,7 @@ public class CommandBB implements CommandExecutor {
 			return true;
 		}
 		if(args.length == 0 || args[0].equalsIgnoreCase("help")) {
-			sender.sendMessage(ChatColor.RED + "Usage: /bb <list|reload|version|changes>");
+			sender.sendMessage(ChatColor.RED + "Usage: /" + label + " <list|reload|version|changes>");
 		} else {
 			Config config = this.plugin.config;
 			switch(args[0].toLowerCase()) {
@@ -57,7 +57,23 @@ public class CommandBB implements CommandExecutor {
 				checkForUpdates(sender);
 				break;
 			case "changes":
-				
+				if(args.length <= 1) {
+					sender.sendMessage(ChatColor.RED + "Usage: /" + label + " changes <version>");
+				} else {
+					if(!UpdateChecker.hasChangelogs()) {
+						checkForUpdates(null);
+					}
+					String version = args[1].toLowerCase().trim();
+					String[] changes = UpdateChecker.getChangesFor(version);
+					if(changes == null) {
+						sender.sendMessage(ChatColor.RED + "Unknown version: " + version);
+					} else {
+						sender.sendMessage(ChatColor.GREEN.toString() + ChatColor.BOLD + "== v" + version + " CHANGELOG ==");
+						for(String change : changes) {
+							sender.sendMessage(ChatColor.GREEN + change);
+						}
+					}
+				}
 				break;
 			default:
 				sender.sendMessage(ChatColor.RED + "Sub-command \"" + args[0] + "\" not recognized! Type /bb help for a list of commands.");
@@ -68,8 +84,9 @@ public class CommandBB implements CommandExecutor {
 	}
 
 	private void checkForUpdates(CommandSender sender) {
-		sender.sendMessage(ChatColor.GRAY.toString() + ChatColor.ITALIC + "Checking for updates...");
+		if(sender != null) sender.sendMessage(ChatColor.GRAY.toString() + ChatColor.ITALIC + "Checking for updates...");
 		UpdateChecker.checkForUpdates(this.plugin, (status) -> {
+			if(sender == null) return;
 			if(status.didFail()) {
 				sender.sendMessage(ChatColor.RED + "Error: " + status.error);
 			} else if(status.isOutdated()) {

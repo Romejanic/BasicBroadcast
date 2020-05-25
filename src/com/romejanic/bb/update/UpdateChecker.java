@@ -90,4 +90,13 @@ public class UpdateChecker {
 		}.runTaskAsynchronously(plugin);
 	}
 	
+	public static boolean hasChangelogs() {
+		return !changelogs.isEmpty();
+	}
+	
+	public static String[] getChangesFor(String version) {
+		if(!changelogs.containsKey(version)) return null;
+		return changelogs.get(version);
+	}
+	
 }
