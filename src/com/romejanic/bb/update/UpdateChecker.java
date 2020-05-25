@@ -65,14 +65,27 @@ public class UpdateChecker {
 					String currentVersion = plugin.getDescription().getVersion();
 					
 					if(currentVersion.compareTo(latestVersion) < 0) {
-						cb.accept(new UpdateStatus(latestVersion, latestDownload, changelogs.get(latestVersion)));
+						new BukkitRunnable() {
+							public void run() {
+								cb.accept(new UpdateStatus(latestVersion, latestDownload, changelogs.get(latestVersion)));
+							}
+						}.runTaskLater(plugin, 0);
 					} else {
-						cb.accept(new UpdateStatus());
+						new BukkitRunnable() {
+							public void run() {
+								cb.accept(new UpdateStatus());
+							}
+						}.runTaskLater(plugin, 0);
 					}
 				} catch (IOException e) {
 					plugin.getLogger().log(Level.WARNING, "Failed to check for updates!", e);
-					cb.accept(new UpdateStatus("Error while checking for updates! Check the console for more info"));
+					new BukkitRunnable() {
+						public void run() {
+							cb.accept(new UpdateStatus("Error while checking for updates! Check the console for more info"));
+						}
+					}.runTaskLater(plugin, 0);
 				}
+				currentTask = null;
 			}
 		}.runTaskAsynchronously(plugin);
 	}
