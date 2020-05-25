@@ -9,6 +9,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.PluginDescriptionFile;
 
 import com.romejanic.bb.BasicBroadcast;
+import com.romejanic.bb.update.UpdateChecker;
 import com.romejanic.bb.util.Config;
 import com.romejanic.bb.util.Util;
 
@@ -27,7 +28,7 @@ public class CommandBB implements CommandExecutor {
 			return true;
 		}
 		if(args.length == 0 || args[0].equalsIgnoreCase("help")) {
-			sender.sendMessage(ChatColor.RED + "Usage: /bb <list|reload|version>");
+			sender.sendMessage(ChatColor.RED + "Usage: /bb <list|reload|version|changes>");
 		} else {
 			Config config = this.plugin.config;
 			switch(args[0].toLowerCase()) {
@@ -53,7 +54,10 @@ public class CommandBB implements CommandExecutor {
 				String authors = Util.join(desc.getAuthors(), ", ");
 				sender.sendMessage(ChatColor.GREEN.toString() + ChatColor.BOLD + name);
 				sender.sendMessage(ChatColor.GREEN + "by " + authors);
-				// TODO: add version check
+				checkForUpdates(sender);
+				break;
+			case "changes":
+				
 				break;
 			default:
 				sender.sendMessage(ChatColor.RED + "Sub-command \"" + args[0] + "\" not recognized! Type /bb help for a list of commands.");
@@ -63,4 +67,19 @@ public class CommandBB implements CommandExecutor {
 		return true;
 	}
 
+	private void checkForUpdates(CommandSender sender) {
+		sender.sendMessage(ChatColor.GRAY.toString() + ChatColor.ITALIC + "Checking for updates...");
+		UpdateChecker.checkForUpdates(this.plugin, (status) -> {
+			if(status.didFail()) {
+				sender.sendMessage(ChatColor.RED + "Error: " + status.error);
+			} else if(status.isOutdated()) {
+				sender.sendMessage(ChatColor.GREEN + "New version available! (v" + status.latestVersion + ")");
+				sender.sendMessage(ChatColor.GREEN + "Download: " + status.latestURL);
+				sender.sendMessage(ChatColor.GREEN + "Type " + ChatColor.BOLD + "/bb changes " + status.latestVersion + ChatColor.GREEN + " for a changelog");
+			} else {
+				sender.sendMessage(ChatColor.GREEN + "You are running the latest version!");
+			}
+		});
+	}
+	
 }
