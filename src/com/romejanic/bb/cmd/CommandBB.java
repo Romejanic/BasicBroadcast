@@ -54,14 +54,14 @@ public class CommandBB implements CommandExecutor {
 				String authors = Util.join(desc.getAuthors(), ", ");
 				sender.sendMessage(ChatColor.GREEN.toString() + ChatColor.BOLD + name);
 				sender.sendMessage(ChatColor.GREEN + "by " + authors);
-				checkForUpdates(sender);
+				checkForUpdates(sender, label);
 				break;
 			case "changes":
 				if(args.length <= 1) {
 					sender.sendMessage(ChatColor.RED + "Usage: /" + label + " changes <version>");
 				} else {
 					if(!UpdateChecker.hasChangelogs()) {
-						checkForUpdates(null);
+						checkForUpdates(null, null);
 					}
 					String version = args[1].toLowerCase().trim();
 					String[] changes = UpdateChecker.getChangesFor(version);
@@ -83,7 +83,7 @@ public class CommandBB implements CommandExecutor {
 		return true;
 	}
 
-	private void checkForUpdates(CommandSender sender) {
+	private void checkForUpdates(CommandSender sender, String alias) {
 		if(sender != null) sender.sendMessage(ChatColor.GRAY.toString() + ChatColor.ITALIC + "Checking for updates...");
 		UpdateChecker.checkForUpdates(this.plugin, (status) -> {
 			if(sender == null) return;
@@ -92,7 +92,7 @@ public class CommandBB implements CommandExecutor {
 			} else if(status.isOutdated()) {
 				sender.sendMessage(ChatColor.GREEN + "New version available! (v" + status.latestVersion + ")");
 				sender.sendMessage(ChatColor.GREEN + "Download: " + status.latestURL);
-				sender.sendMessage(ChatColor.GREEN + "Type " + ChatColor.BOLD + "/bb changes " + status.latestVersion + ChatColor.GREEN + " for a changelog");
+				sender.sendMessage(ChatColor.GREEN + "Type " + ChatColor.BOLD + "/" + alias + " changes " + status.latestVersion + ChatColor.GREEN + " for a changelog");
 			} else {
 				sender.sendMessage(ChatColor.GREEN + "You are running the latest version!");
 			}
