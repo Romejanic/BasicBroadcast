@@ -24,15 +24,21 @@ public class Util {
 		return sb.toString();
 	}
 	
-	public static String join(String[] arr, String div) {
+	public static String join(String[] arr, int start, String div) {
+		if(start < 0 || start >= arr.length)
+			throw new IllegalArgumentException("Invalid start index: " + start);
 		StringBuilder sb = new StringBuilder();
-		for(int i = 0; i < arr.length; i++) {
+		for(int i = start; i < arr.length; i++) {
 			sb.append(arr[i]);
 			if(i < arr.length - 1) {
 				sb.append(div);
 			}
 		}
 		return sb.toString();
+	}
+	
+	public static String join(String[] arr, String div) {
+		return join(arr, 0, div);
 	}
 	
 	public static boolean hasPermission(String perm, CommandSender sender) {

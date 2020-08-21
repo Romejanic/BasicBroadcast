@@ -32,6 +32,14 @@ public class CommandBB implements CommandExecutor {
 		} else {
 			Config config = this.plugin.config;
 			switch(args[0].toLowerCase()) {
+			case "say":
+				if(args.length <= 1) {
+					sender.sendMessage(ChatColor.RED + "Usage: /" + label + " say <message>");
+				} else {
+					String msg = Util.join(args, 1, " ").trim();
+					sender.sendMessage(config.getChatPrefix() + ChatColor.RESET + " " + msg);
+				}
+				break;
 			case "list":
 				sender.sendMessage(ChatColor.BOLD + "List of broadcast messages:");
 				Iterator<String[]> iter = config.getMessageIterator();
