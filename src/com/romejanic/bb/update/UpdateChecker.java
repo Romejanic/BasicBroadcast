@@ -7,6 +7,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.logging.Level;
 
@@ -97,6 +98,10 @@ public class UpdateChecker {
 	public static String[] getChangesFor(String version) {
 		if(!changelogs.containsKey(version)) return null;
 		return changelogs.get(version);
+	}
+	
+	public static Set<String> getVersions() {
+		return changelogs.keySet();
 	}
 	
 }

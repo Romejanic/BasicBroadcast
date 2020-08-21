@@ -1,12 +1,16 @@
 package com.romejanic.bb.cmd;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.plugin.PluginDescriptionFile;
 
 import com.romejanic.bb.BasicBroadcast;
@@ -14,8 +18,10 @@ import com.romejanic.bb.update.UpdateChecker;
 import com.romejanic.bb.util.Config;
 import com.romejanic.bb.util.Util;
 
-public class CommandBB implements CommandExecutor {
+public class CommandBB implements CommandExecutor, TabCompleter {
 
+	private static final String[] SUBCOMMANDS = { "say", "list", "reload", "version", "changes", "help" };
+	
 	private final BasicBroadcast plugin;
 	
 	public CommandBB(BasicBroadcast plugin) {
@@ -29,7 +35,7 @@ public class CommandBB implements CommandExecutor {
 			return true;
 		}
 		if(args.length == 0 || args[0].equalsIgnoreCase("help")) {
-			sender.sendMessage(ChatColor.RED + "Usage: /" + label + " <say|list|reload|version|changes>");
+			sender.sendMessage(ChatColor.RED + "Usage: /" + label + " <" + Util.join(SUBCOMMANDS, "|") +">");
 		} else {
 			Config config = this.plugin.config;
 			switch(args[0].toLowerCase()) {
@@ -93,6 +99,31 @@ public class CommandBB implements CommandExecutor {
 			}
 		}
 		return true;
+	}
+	
+	@Override
+	public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+		if(!Util.hasPermission("config", sender))
+			return null;
+		List<String> list = new ArrayList<String>();
+		if(args.length <= 1) {
+			list.addAll(Arrays.asList(SUBCOMMANDS));
+			if(args.length == 1) {
+				list.removeIf((str) -> !str.startsWith(args[0]));
+			}
+		} else if(args.length < 3) {
+			switch(args[0].toLowerCase()) {
+			case "changes":
+				list.addAll(UpdateChecker.getVersions());
+				if(args.length == 2) {
+					list.removeIf((str) -> !str.startsWith(args[1]));
+				}
+				break;
+			default:
+				break;
+			}
+		}
+		return list;
 	}
 
 	private void checkForUpdates(CommandSender sender, String alias) {
