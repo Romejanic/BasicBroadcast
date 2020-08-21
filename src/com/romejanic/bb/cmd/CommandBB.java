@@ -29,7 +29,7 @@ public class CommandBB implements CommandExecutor {
 			return true;
 		}
 		if(args.length == 0 || args[0].equalsIgnoreCase("help")) {
-			sender.sendMessage(ChatColor.RED + "Usage: /" + label + " <list|reload|version|changes>");
+			sender.sendMessage(ChatColor.RED + "Usage: /" + label + " <say|list|reload|version|changes>");
 		} else {
 			Config config = this.plugin.config;
 			switch(args[0].toLowerCase()) {
