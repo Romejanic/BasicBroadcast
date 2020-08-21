@@ -2,6 +2,7 @@ package com.romejanic.bb.cmd;
 
 import java.util.Iterator;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -37,7 +38,10 @@ public class CommandBB implements CommandExecutor {
 					sender.sendMessage(ChatColor.RED + "Usage: /" + label + " say <message>");
 				} else {
 					String msg = Util.join(args, 1, " ").trim();
-					sender.sendMessage(config.getChatPrefix() + ChatColor.RESET + " " + msg);
+					String[] formatted = config.formatBroadcastMessage(msg);
+					for(String line : formatted) {
+						Bukkit.broadcastMessage(line);
+					}
 				}
 				break;
 			case "list":

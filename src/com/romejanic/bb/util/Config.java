@@ -43,7 +43,7 @@ public class Config {
 		this.metrics.addCustomChart(new Metrics.SimplePie("number_of_messages", () -> String.valueOf(this.cachedMessages.size())));
 	}
 	
-	private String[] formatBroadcastMessage(String msg) {
+	public String[] formatBroadcastMessage(String msg) {
 		msg = Util.parseColors(msg);
 		String prefix = "";
 		if(this.useChatPrefix()) {
