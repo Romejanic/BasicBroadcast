@@ -8,5 +8,5 @@ main: com.romejanic.bb.BasicBroadcast
 commands:
     bb:
         description: Base command for BasicBroadcast
-        usage: /bb <list|reload|version|changes>
+        usage: /bb <say|list|reload|version|changes|help>
         aliases: basicbroadcast
